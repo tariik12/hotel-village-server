@@ -30,6 +30,7 @@ async function run() {
     try {
         const roomBooksCollection = client.db('hotel-village').collection('hotel');
         const services3Collection = client.db('hotel-village').collection('services3');
+        const hotelServicesCollection = client.db('hotel-village').collection('hotelServicesData');
 
         app.get('/allProducts',async(req,res) =>{
             const result = await roomBooksCollection.find().toArray()
@@ -40,6 +41,10 @@ async function run() {
             res.send(result)
         })
        
+        app.get('/hotelServicesData',async(req,res) =>{
+            const result = await hotelServicesCollection.find().toArray()
+            res.send(result)
+        })
         
      
         
