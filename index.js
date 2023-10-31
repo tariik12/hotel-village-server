@@ -29,9 +29,14 @@ async function run() {
 
     try {
         const roomBooksCollection = client.db('hotel-village').collection('hotel');
+        const services3Collection = client.db('hotel-village').collection('services3');
 
         app.get('/allProducts',async(req,res) =>{
             const result = await roomBooksCollection.find().toArray()
+            res.send(result)
+        })
+        app.get('/services3',async(req,res) =>{
+            const result = await services3Collection.find().toArray()
             res.send(result)
         })
        
