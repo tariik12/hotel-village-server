@@ -31,20 +31,53 @@ async function run() {
         const roomBooksCollection = client.db('hotel-village').collection('hotel');
         const services3Collection = client.db('hotel-village').collection('services3');
         const hotelServicesCollection = client.db('hotel-village').collection('hotelServicesData');
+        
+        app.get('/hotelServicesData',async(req,res) =>{
+            const result = await hotelServicesCollection.find().toArray()
+            res.send(result)
+        })
 
+        app.post('/hotelServicesData', async (req, res) => {
+            const newData = req.body;
+      
+            try {
+              const result = await hotelServicesCollection.insertOne(newData);
+              res.status(201).json(result);
+            } catch (err) {
+              console.error('Error creating data:', err);
+              res.status(500).json({ error: 'Internal Server Error' });
+            }
+          });
+          app.patch('/hotelServicesData/:id', async (req, res) => {
+            const dataId = req.params.id;
+            const updatedStatusData = req.body;
+      
+            try {
+              const result = await hotelServicesCollection.updateOne(
+                { _id: new ObjectId(dataId) },
+                { $set: updatedStatusData }
+              );
+      
+              if (result.matchedCount === 0) {
+                res.status(404).json({ error: 'data not found' });
+              } else {
+                res.json({ message: 'data updated successfully' });
+              }
+            } catch (err) {
+              console.error('Error updating data:', err);
+              res.status(500).json({ error: 'Internal Server Error' });
+            }
+          });
         app.get('/allProducts',async(req,res) =>{
             const result = await roomBooksCollection.find().toArray()
             res.send(result)
         })
+
         app.get('/services3',async(req,res) =>{
             const result = await services3Collection.find().toArray()
             res.send(result)
         })
        
-        app.get('/hotelServicesData',async(req,res) =>{
-            const result = await hotelServicesCollection.find().toArray()
-            res.send(result)
-        })
         
      
         
