@@ -48,26 +48,27 @@ async function run() {
               res.status(500).json({ error: 'Internal Server Error' });
             }
           });
+        
           app.patch('/hotelServicesData/:id', async (req, res) => {
-            const dataId = req.params.id;
-            const updatedStatusData = req.body;
-      
+            const Id = req.params.id;
+            const updatedTaskData = req.body;
             try {
               const result = await hotelServicesCollection.updateOne(
-                { _id: new ObjectId(dataId) },
-                { $set: updatedStatusData }
+                { _id: new ObjectId(Id) },
+                { $set: updatedTaskData }
               );
       
               if (result.matchedCount === 0) {
-                res.status(404).json({ error: 'data not found' });
+                res.status(404).json({ error: 'Task not found' });
               } else {
-                res.json({ message: 'data updated successfully' });
+                res.json({ message: 'Task updated successfully' });
               }
             } catch (err) {
-              console.error('Error updating data:', err);
+              console.error('Error updating task:', err);
               res.status(500).json({ error: 'Internal Server Error' });
             }
-          });
+          }); 
+  
         app.get('/allProducts',async(req,res) =>{
             const result = await roomBooksCollection.find().toArray()
             res.send(result)
