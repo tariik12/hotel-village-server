@@ -68,6 +68,25 @@ async function run() {
               res.status(500).json({ error: 'Internal Server Error' });
             }
           }); 
+
+          app.delete('/hotelServicesData/:id', async (req, res) => {
+            const Id = req.params.id;
+      
+            try {
+              const result = await hotelServicesCollection.deleteOne({
+                _id: ObjectId(Id),
+              });
+              if (result.deletedCount === 0) {
+                res.status(404).json({ error: 'data not found' });
+              } else {
+                res.json({ message: 'data deleted successfully' });
+              }
+            } catch (err) {
+              console.error('Error deleting data:', err);
+              res.status(500).json({ error: 'Internal Server Error' });
+            }
+          });
+      
   
         app.get('/allProducts',async(req,res) =>{
             const result = await roomBooksCollection.find().toArray()
